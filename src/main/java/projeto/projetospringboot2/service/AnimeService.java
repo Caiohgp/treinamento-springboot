@@ -18,6 +18,10 @@ public class AnimeService {
         animes = new ArrayList<>(List.of(new Anime(1L,"One Piece"),new Anime(2L,"Berserk")));
     }
 
+    public void delete(long id) {
+        animes.remove(findById(id));
+    }
+
     public List<Anime> listAll(){
  		return animes;
     }
@@ -34,4 +38,5 @@ public class AnimeService {
         animes.add(anime);
         return anime;
     }
+
 }

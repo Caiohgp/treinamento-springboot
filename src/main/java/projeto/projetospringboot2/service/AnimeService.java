@@ -14,19 +14,19 @@ public class AnimeService {
 
     private static List<Anime> animes;
 
-    static{
-        animes = new ArrayList<>(List.of(new Anime(1L,"One Piece"),new Anime(2L,"Berserk")));
+    static {
+        animes = new ArrayList<>(List.of(new Anime(1L, "One Piece"), new Anime(2L, "Berserk")));
     }
 
     public void delete(long id) {
         animes.remove(findById(id));
     }
 
-    public List<Anime> listAll(){
- 		return animes;
+    public List<Anime> listAll() {
+        return animes;
     }
 
-    public Anime findById(long id){
+    public Anime findById(long id) {
         return animes.stream()
                 .filter(anime -> anime.getId().equals(id))
                 .findFirst()
@@ -34,9 +34,13 @@ public class AnimeService {
     }
 
     public Anime save(Anime anime) {
-        anime.setId(ThreadLocalRandom.current().nextLong(3,1000000));
+        anime.setId(ThreadLocalRandom.current().nextLong(3, 1000000));
         animes.add(anime);
         return anime;
     }
 
+    public void replace(Anime anime) {
+        delete(anime.getId());
+        animes.add(anime);
+    }
 }

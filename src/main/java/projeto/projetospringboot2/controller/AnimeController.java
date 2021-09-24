@@ -17,28 +17,34 @@ import java.util.List;
 @Log4j2
 @RequiredArgsConstructor
 public class AnimeController {
-	private final DateUtil dateUtil;
-	private final AnimeService animeService;
+    private final DateUtil dateUtil;
+    private final AnimeService animeService;
 
-	@GetMapping
-	public ResponseEntity<List<Anime>> list(){
-		log.info(dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
-		return new ResponseEntity<>(animeService.listAll(), HttpStatus.OK);
-	}
+    @GetMapping
+    public ResponseEntity<List<Anime>> list() {
+        log.info(dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
+        return new ResponseEntity<>(animeService.listAll(), HttpStatus.OK);
+    }
 
-	@GetMapping(path = "/{id}")
-	public ResponseEntity<Anime> findById(@PathVariable long id){
-		return ResponseEntity.ok(animeService.findById(id));
-	}
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<Anime> findById(@PathVariable long id) {
+        return ResponseEntity.ok(animeService.findById(id));
+    }
 
-	@PostMapping
-	public ResponseEntity<Anime> save(@RequestBody Anime anime){
-		return new ResponseEntity<>(animeService.save(anime), HttpStatus.CREATED);
-	}
+    @PostMapping
+    public ResponseEntity<Anime> save(@RequestBody Anime anime) {
+        return new ResponseEntity<>(animeService.save(anime), HttpStatus.CREATED);
+    }
 
-	@DeleteMapping(path = "/{id}")
-	public ResponseEntity<Void> delete(@PathVariable long id){
-		animeService.delete(id);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	}
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable long id) {
+        animeService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping
+    public ResponseEntity<Void> replace(@RequestBody Anime anime) {
+        animeService.replace(anime);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

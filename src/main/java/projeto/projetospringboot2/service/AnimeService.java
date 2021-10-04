@@ -11,6 +11,7 @@ import projeto.projetospringboot2.repository.AnimeRepository;
 import projeto.projetospringboot2.requests.AnimePostRequestBody;
 import projeto.projetospringboot2.requests.AnimePutRequestBody;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -32,6 +33,7 @@ public class AnimeService {
                 .orElseThrow(() -> new BadRequestException("Anime Not Found"));
     }
 
+    @Transactional
     public Anime save(AnimePostRequestBody animePostRequestBody) {
         return animeRepository.save(AnimeMapper.INSTANCE.toAnime(animePostRequestBody));
     }

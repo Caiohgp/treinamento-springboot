@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import projeto.projetospringboot2.domain.Anime;
 
+import java.util.List;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
@@ -16,12 +19,49 @@ class AnimeRepositoryTest {
     private AnimeRepository animeRepository;
 
     @Test
-    @DisplayName("Save creates anime")
-    void save_PersistAnime_WhenSuccessful(){
+    @DisplayName("Save persists anime when successful")
+    void save_PersistsAnime_WhenSuccessful(){
         Anime anime = createAnime();
         Anime animeSaved = this.animeRepository.save(anime);
+
+        Assertions.assertThat(animeSaved).isNotNull();
         Assertions.assertThat(animeSaved.getId()).isNotNull();
         Assertions.assertThat(animeSaved.getName()).isEqualTo(anime.getName());
+    }
+
+    @Test
+    @DisplayName("Save updates anime when successful")
+    void save_UpdatesAnime_WhenSuccessful(){
+        Anime anime = createAnime();
+        Anime animeSaved = this.animeRepository.save(anime);
+        animeSaved.setName("Overlord");
+        Anime animeUpdaTed = this.animeRepository.save(animeSaved);
+
+        Assertions.assertThat(animeUpdaTed).isNotNull();
+        Assertions.assertThat(animeUpdaTed.getId()).isNotNull();
+        Assertions.assertThat(animeUpdaTed.getName()).isEqualTo(animeSaved.getName());
+    }
+
+    @Test
+    @DisplayName("Delete removes anime when successful")
+    void delete_RemovesAnime_WhenSuccessful(){
+        Anime anime = createAnime();
+        Anime animeSaved = this.animeRepository.save(anime);
+
+        this.animeRepository.delete(animeSaved);
+
+        Optional<Anime> animeOptional = this.animeRepository.findById(animeSaved.getId());
+
+        Assertions.assertThat(animeOptional).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Find by name returns empty list of anime when no anime is found")
+    void findByName_ReturnsEmptyListOfAnime_WhenAnimeIsNotFound(){
+
+        List<Anime> animes = this.animeRepository.findByName("123456");
+
+        Assertions.assertThat(animes).isEmpty();
     }
 
     private Anime createAnime(){

@@ -15,6 +15,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.DirtiesContext;
 import projeto.projetospringboot2.domain.Anime;
 import projeto.projetospringboot2.repository.AnimeRepository;
 import projeto.projetospringboot2.requests.AnimePostRequestBody;
@@ -26,6 +27,8 @@ import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+
 public class AnimeControllerIT {
     @Autowired
     private TestRestTemplate testRestTemplate;
@@ -143,19 +146,18 @@ public class AnimeControllerIT {
 
 
     }
-//
-//    @Test
-//    @DisplayName("delete returns anime when successful.")
-//    void delete_DeleteAnime_WhenSuccessful() {
-//
-//        Assertions.assertThatCode(()->animeController.delete(1))
-//                .doesNotThrowAnyException();
-//        ResponseEntity<Void> entity = animeController.delete(1);
-//
-//        Assertions.assertThat(entity).isNotNull();
-//
-//        Assertions.assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
-//
-//    }
+
+    @Test
+    @DisplayName("delete removes anime when successful")
+    void delete_RemovesAnime_WhenSuccessful(){
+        Anime savedAnime = animeRepository.save(AnimeCreator.createAnimeToBeSaved());
+
+        ResponseEntity<Void> animeResponseEntity = testRestTemplate.exchange("/animes/{id}",
+                HttpMethod.DELETE,null, Void.class, savedAnime.getId());
+
+        Assertions.assertThat(animeResponseEntity).isNotNull();
+
+        Assertions.assertThat(animeResponseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+    }
 
 }

@@ -116,7 +116,7 @@ public class AnimeControllerIT {
 
         Assertions.assertThat(anime)
                 .isNotNull()
-                .isNotEmpty();
+                .isEmpty();
     }
 
     @Test

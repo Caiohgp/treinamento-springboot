@@ -12,5 +12,5 @@ public abstract class AnimeMapper {
 
     public abstract Anime toAnime(AnimePostRequestBody animePostRequestBody);
 
-    public abstract Anime toAnime(AnimePutRequestBody animePostRequestBody);
+    public abstract Anime toAnime(AnimePutRequestBody animePutRequestBody);
 }
